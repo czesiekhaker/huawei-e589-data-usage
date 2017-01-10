@@ -30,5 +30,5 @@ supported.
 Example:
 
 ```
-./huawei_watch 1M 'i3-nagbar -m "buy a next data packet" -t warning'
+./huawei_watch 980M 'i3-nagbar -m "buy a next data packet" -t warning'
 ```
