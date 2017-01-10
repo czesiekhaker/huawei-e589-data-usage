@@ -7,4 +7,4 @@ mobile router.
 
 ## Usage
 
-Run `./data_usage`.
+Run `./huawei_info`.
