@@ -5,6 +5,11 @@ mobile router.
 
 * display of current session's total download
 
+## Requirements
+
+* bs4 (BeautifulSoup)
+* lxml
+
 ## Installation
 
 Run `sudo make install`. It installs to `/usr/local/bin`, you can change
