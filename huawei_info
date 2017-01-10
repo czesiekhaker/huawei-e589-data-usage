@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
@@ -6,8 +6,7 @@
 #
 # Distributed under terms of the MIT license.
 
-import urllib2
-from bs4 import BeautifulSoup
+import e589_stats
 
 # via https://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
 def sizeof_fmt(num, suffix='B'):
@@ -18,12 +17,8 @@ def sizeof_fmt(num, suffix='B'):
     return "%.1f %s%s" % (num, 'Yi', suffix)
 
 def main():
-    stats_url = 'http://192.168.1.1/api/monitoring/traffic-statistics'
-    response = urllib2.urlopen(stats_url)
-    html = response.read()
-    soup = BeautifulSoup(html, "lxml")
-    total_bytes_down = int(soup.response.currentdownload.get_text())
-    print(sizeof_fmt(total_bytes_down))
+    bytes_down = e589_stats.get_stats()['current_down']
+    print(sizeof_fmt(bytes_down))
 
 if __name__ == '__main__':
     main()
