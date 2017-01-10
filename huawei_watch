@@ -1,0 +1,52 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+# vim:fenc=utf-8
+#
+# Copyright © 2017 Michał "czesiek" Czyżewski <me@czesiek.net>
+#
+# Distributed under terms of the MIT license.
+
+import e589_stats
+import argparse
+import time
+import os
+
+watch_interval = 1 #XXX
+
+def handle_suffixes(size):
+    """Handle k, m, g size suffixes."""
+
+    if size[-1:] in ['k', 'K', 'm', 'M', 'g', 'G']:
+        if size[-1:] in ['g', 'G']:
+            return int(size[:-1]) * 1024 * 1024 * 1024
+        elif size[-1:] in ['m', 'M']:
+            return int(size[:-1]) * 1024 * 1024
+        else:
+            return int(size[:-1]) * 1024
+    else:
+        return size
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("amount", help="amount of data after which a command should be executed")
+    parser.add_argument("command", help="command to be executed after reaching the data threshold", nargs='+')
+    args = parser.parse_args()
+
+    byte_amount = handle_suffixes(args.amount)
+    command = ' '.join(args.command)
+    print('Will execute `{}` after {} bytes'.format(command, str(byte_amount)))
+
+    # operaring on total to handle reconnects
+    target_bytes = e589_stats.get_stats()['total_down'] + byte_amount
+
+    while True:
+        current_bytes = e589_stats.get_stats()['total_down']
+        if current_bytes > target_bytes:
+            print('Executing `{}`'.format(command))
+            os.system(command)
+            break
+
+        time.sleep(watch_interval)
+
+if __name__ == '__main__':
+    main()

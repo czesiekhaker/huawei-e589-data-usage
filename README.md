@@ -12,6 +12,8 @@ mobile router.
 
 ## Installation
 
+**broken**, run from project dir for now
+
 Run `sudo make install`. It installs to `/usr/local/bin`, you can change
 this by modifying `PREFIX` variable in the `Makefile`.
 
@@ -19,4 +21,14 @@ To uninstall run `sudo make uninstall`.
 
 ## Usage
 
-Run `huawei_info`.
+Run `./huawei_info` to view the statistics.
+
+Run `./huawei_watch amount command` to run `command` after
+downloading `amount` of data. Prefixes `k`, `K`, `m`, `M`, `g`, `G` are
+supported.
+
+Example:
+
+```
+./huawei_watch 1M 'i3-nagbar -m "buy a next data packet" -t warning'
+```
