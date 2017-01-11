@@ -11,7 +11,7 @@ import argparse
 import time
 import os
 
-watch_interval = 1 #XXX
+watch_interval = 10
 
 def handle_suffixes(size):
     """Handle k, m, g size suffixes."""
