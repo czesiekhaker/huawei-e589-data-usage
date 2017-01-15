@@ -7,8 +7,9 @@ mobile router.
 
 ## Requirements
 
-* bs4 (BeautifulSoup)
-* lxml
+* `bs4` (BeautifulSoup)
+* `lxml`
+* `progressbar2`
 
 ## Installation
 
