@@ -33,3 +33,7 @@ Example:
 ```
 ./huawei_watch 980M 'i3-nagbar -m "buy a next data packet" -t warning'
 ```
+
+`huawei_watch` warns the user when the router cannot be reached (eg.
+right after suspend or on router reboot) and gracefully continues when
+the connectivity is back.
