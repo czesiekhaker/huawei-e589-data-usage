@@ -10,8 +10,9 @@ import e589_stats
 import argparse
 import time
 import os
+from progressbar import ProgressBar
 
-watch_interval = 10
+watch_interval = 4
 
 def handle_suffixes(size):
     """Handle k, m, g size suffixes."""
@@ -37,7 +38,10 @@ def main():
     print('Will execute `{}` after {} bytes'.format(command, str(byte_amount)))
 
     # operaring on total to handle reconnects
-    target_bytes = e589_stats.get_stats()['total_down'] + byte_amount
+    start_bytes  = e589_stats.get_stats()['total_down']
+    target_bytes = start_bytes + byte_amount
+
+    progress = ProgressBar(max_value=byte_amount)
 
     while True:
         current_bytes = e589_stats.get_stats()['total_down']
@@ -45,6 +49,9 @@ def main():
             print('Executing `{}`'.format(command))
             os.system(command)
             break
+        else:
+            bytes_down = current_bytes - start_bytes
+            progress.update(bytes_down)
 
         time.sleep(watch_interval)
 
