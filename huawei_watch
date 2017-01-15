@@ -11,6 +11,7 @@ import argparse
 import time
 import os
 from progressbar import ProgressBar
+from urllib.error import URLError
 
 watch_interval = 4
 
@@ -38,20 +39,28 @@ def main():
     print('Will execute `{}` after {} bytes'.format(command, str(byte_amount)))
 
     # operaring on total to handle reconnects
-    start_bytes  = e589_stats.get_stats()['total_down']
+    try:
+        start_bytes  = e589_stats.get_stats()['total_down']
+    except URLError as err:
+        print('Could not get stats: {}'.format(err))
+        exit(1)
+
     target_bytes = start_bytes + byte_amount
 
     progress = ProgressBar(max_value=byte_amount)
 
     while True:
-        current_bytes = e589_stats.get_stats()['total_down']
-        if current_bytes > target_bytes:
-            print('Executing `{}`'.format(command))
-            os.system(command)
-            break
-        else:
-            bytes_down = current_bytes - start_bytes
-            progress.update(bytes_down)
+        try:
+            current_bytes = e589_stats.get_stats()['total_down']
+            if current_bytes > target_bytes:
+                print('Executing `{}`'.format(command))
+                os.system(command)
+                break
+            else:
+                bytes_down = current_bytes - start_bytes
+                progress.update(bytes_down)
+        except URLError as err:
+            print('[warning] Could not get stats: {}'.format(err))
 
         time.sleep(watch_interval)
 
